@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useRef } from "react";
+import useCounter from "./useCounter";
 
 function App() {
+  const intervalIdRef = useRef();
+  const h1Color = useRef();
+  const { countValue, onMouseDown, onMouseLeave } = useCounter({
+    intervalIdRef,
+    delay: 20,
+    incrementCountValue: 10,
+    initialCountValue: 5,
+  });
+
+  useEffect(() => {
+    countValue % 4 === 0 ? (h1Color.current.style.color = "brown") : (h1Color.current.style.color = "darkcyan");
+  }, [countValue]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onMouseDown={onMouseDown} onMouseLeave={onMouseLeave} onClick={onMouseLeave}>
+        Click
+      </button>
+      <h1 ref={h1Color}>{countValue}</h1>
     </div>
   );
 }
